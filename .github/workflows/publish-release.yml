@@ -1,0 +1,34 @@
+name: Publish FlowLyrics release
+on:
+  push:
+    branches: [ccr-ee548e6e-ucb6ns]
+    paths: ['release/**']
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: v0.4.2
+      APK: FlowLyrics-v0.4.2-b1016-a0f9c58-signed.apk
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify checksum
+        run: |
+          cd release
+          test -s "$APK"
+          test "$(sha256sum "$APK" | cut -d' ' -f1)" = "$(tr -d '[:space:]' < "$APK.sha256")"
+      - name: Refuse to overwrite an existing release
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::$TAG already exists"; exit 1
+          fi
+      - name: Create release
+        run: |
+          gh release create "$TAG" "release/$APK" "release/$APK.sha256" \
+            --repo "$GITHUB_REPOSITORY" --target main \
+            --title "FlowLyrics $TAG" --notes-file release/NOTES.md --latest
