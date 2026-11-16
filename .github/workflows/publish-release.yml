@@ -13,8 +13,8 @@ jobs:
     timeout-minutes: 10
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: v0.4.23
-      APK: FlowLyrics-v0.4.23-b1056-3ef2eed-signed.apk
+      TAG: v0.4.24
+      APK: FlowLyrics-v0.4.24-b1058-899c865-signed.apk
     steps:
       - uses: actions/checkout@v4
       - name: Verify checksum
@@ -31,4 +31,4 @@ jobs:
         run: |
           gh release create "$TAG" "release/$APK" "release/$APK.sha256" \
             --repo "$GITHUB_REPOSITORY" --target main \
-            --title "FlowLyrics $TAG（原生鎖屏疊字相容性測試版）" --notes-file release/NOTES.md --latest
+            --title "FlowLyrics $TAG" --notes-file release/NOTES.md --latest
