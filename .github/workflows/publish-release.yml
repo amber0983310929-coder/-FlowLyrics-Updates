@@ -13,8 +13,8 @@ jobs:
     timeout-minutes: 10
     env:
       GH_TOKEN: ${{ github.token }}
-      TAG: v0.4.58
-      APK: FlowLyrics-v0.4.58-b1131-a306eb1-signed.apk
+      TAG: v0.4.59
+      APK: FlowLyrics-v0.4.59-b1132-1760dc3-signed.apk
     steps:
       - uses: actions/checkout@v4
       - name: Verify checksum
